@@ -1,0 +1,200 @@
+<html>
+<head>
+<title>MainActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,128,0); font-weight: bold; }
+.s3 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+MainActivity.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">exampl.gimseongjae.parshingresult; 
+ 
+</span><span class="s0">import </span><span class="s1">android.os.AsyncTask; 
+</span><span class="s0">import </span><span class="s1">android.os.Bundle; 
+</span><span class="s0">import </span><span class="s1">android.support.v7.app.AppCompatActivity; 
+</span><span class="s0">import </span><span class="s1">android.widget.TextView; 
+</span><span class="s0">import </span><span class="s1">java.io.BufferedReader; 
+</span><span class="s0">import </span><span class="s1">java.io.FileWriter; 
+</span><span class="s0">import </span><span class="s1">java.io.IOException; 
+</span><span class="s0">import </span><span class="s1">java.io.InputStreamReader; 
+</span><span class="s0">import </span><span class="s1">java.net.HttpURLConnection; 
+</span><span class="s0">import </span><span class="s1">java.net.URL; 
+ 
+</span><span class="s0">import static </span><span class="s1">exampl.gimseongjae.parshingresult.R.layout.activity_main; 
+ 
+</span><span class="s0">public class </span><span class="s1">MainActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity { 
+ 
+ 
+    TextView textview; 
+    TextView textview2; 
+    TextView textview3; 
+    String target = </span><span class="s2">&quot;http://www.kweather.co.kr/forecast/forecast_lifestyle_detail.html?main_map=1&amp;area1=area0&amp;area2=11140000_108&quot;</span><span class="s1">; 
+    String a; 
+    String b; 
+    String c; 
+    String target2=</span><span class="s2">&quot;http://cleanair.seoul.go.kr/main.htm&quot;</span><span class="s1">; 
+ 
+    @Override 
+    </span><span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
+        </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
+        setContentView(activity_main); 
+ 
+        textview = (TextView) findViewById(R.id.showing); 
+        textview2 = (TextView) findViewById(R.id.showing2); 
+        textview3 = (TextView) findViewById(R.id.showing3); 
+        starAsynctask(); 
+        startAsynctask(); 
+    } 
+ 
+    </span><span class="s0">private void </span><span class="s1">startAsynctask() { 
+        Async2 task1 = </span><span class="s0">new </span><span class="s1">Async2(); 
+        task1.execute(); 
+    } 
+ 
+ 
+    </span><span class="s0">private void </span><span class="s1">starAsynctask() { 
+        Async task = </span><span class="s0">new </span><span class="s1">Async(); 
+        task.execute(); 
+    } 
+ 
+    </span><span class="s0">class </span><span class="s1">Async2 </span><span class="s0">extends </span><span class="s1">AsyncTask&lt;String, Void, String&gt;{ 
+        @Override 
+        </span><span class="s0">protected </span><span class="s1">String doInBackground(String... params) { 
+ 
+            HttpURLConnection con = </span><span class="s0">null</span><span class="s1">; 
+            </span><span class="s0">try </span><span class="s1">{ 
+                con = (HttpURLConnection) </span><span class="s0">new </span><span class="s1">URL(target2).openConnection(); 
+            } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+                e.printStackTrace(); 
+            } 
+ 
+            BufferedReader br = </span><span class="s0">null</span><span class="s1">; 
+            </span><span class="s0">try </span><span class="s1">{ 
+                br = </span><span class="s0">new </span><span class="s1">BufferedReader(</span><span class="s0">new </span><span class="s1">InputStreamReader(con.getInputStream(), </span><span class="s2">&quot;UTF-8&quot;</span><span class="s1">)); 
+            } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+                e.printStackTrace(); 
+            } 
+ 
+            FileWriter fw = </span><span class="s0">null</span><span class="s1">; 
+            String temp; 
+ 
+            </span><span class="s0">try </span><span class="s1">{ 
+                </span><span class="s0">while</span><span class="s1">((temp = br.readLine())!=</span><span class="s0">null</span><span class="s1">) 
+                { 
+ 
+                    </span><span class="s0">if</span><span class="s1">(temp.contains(</span><span class="s2">&quot;ft_point2&quot;</span><span class="s1">)) 
+                    { 
+                        temp=temp.split(</span><span class="s2">&quot;ft_point2</span><span class="s0">\&quot;</span><span class="s2">&gt;&quot;</span><span class="s1">)[</span><span class="s3">1</span><span class="s1">].split(</span><span class="s2">&quot;&lt;&quot;</span><span class="s1">)[</span><span class="s3">0</span><span class="s1">]; 
+                        c=temp; 
+ 
+                        </span><span class="s0">break</span><span class="s1">; 
+                    } 
+ 
+ 
+                } 
+            } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+                e.printStackTrace(); 
+            } 
+ 
+            con.disconnect(); 
+            </span><span class="s0">try </span><span class="s1">{ 
+                br.close(); 
+            } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+                e.printStackTrace(); 
+            } 
+ 
+ 
+            </span><span class="s0">return </span><span class="s2">&quot;temp&quot;</span><span class="s1">; 
+        } 
+ 
+        @Override 
+        </span><span class="s0">protected void </span><span class="s1">onPostExecute(String s) { 
+            textview3.setText(c); 
+        } 
+    } 
+ 
+ 
+ 
+ 
+ 
+    </span><span class="s0">class </span><span class="s1">Async </span><span class="s0">extends </span><span class="s1">AsyncTask&lt;String, Void, String&gt; { 
+ 
+ 
+        @Override 
+        </span><span class="s0">protected </span><span class="s1">String doInBackground(String... params) { 
+ 
+ 
+            HttpURLConnection con = </span><span class="s0">null</span><span class="s1">; 
+            </span><span class="s0">try </span><span class="s1">{ 
+                con = (HttpURLConnection) </span><span class="s0">new </span><span class="s1">URL(target).openConnection(); 
+            } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+                e.printStackTrace(); 
+            } 
+ 
+ 
+            BufferedReader br = </span><span class="s0">null</span><span class="s1">; 
+            </span><span class="s0">try </span><span class="s1">{ 
+                br = </span><span class="s0">new </span><span class="s1">BufferedReader(</span><span class="s0">new </span><span class="s1">InputStreamReader(con.getInputStream(), </span><span class="s2">&quot;UTF-8&quot;</span><span class="s1">)); 
+            } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+                e.printStackTrace(); 
+            } 
+ 
+ 
+            FileWriter fw = </span><span class="s0">null</span><span class="s1">; 
+            String temp; 
+ 
+            </span><span class="s0">try </span><span class="s1">{ 
+                </span><span class="s0">while </span><span class="s1">((temp = br.readLine()) != </span><span class="s0">null</span><span class="s1">) { 
+ 
+                    </span><span class="s0">if </span><span class="s1">(temp.contains(</span><span class="s2">&quot;lifestyle_present_forecast_weather&quot;</span><span class="s1">)) { 
+                        temp = temp.split(</span><span class="s2">&quot;lifestyle_present_forecast_weather</span><span class="s0">\&quot;</span><span class="s2">&gt;&quot;</span><span class="s1">)[</span><span class="s3">1</span><span class="s1">].split(</span><span class="s2">&quot;&lt;&quot;</span><span class="s1">)[</span><span class="s3">0</span><span class="s1">]; 
+                        a = temp; 
+ 
+                    } 
+ 
+                    </span><span class="s0">if </span><span class="s1">(temp.contains(</span><span class="s2">&quot;lifestyle_present_forecast_temp&quot;</span><span class="s1">)) { 
+                        temp = temp.split(</span><span class="s2">&quot;lifestyle_present_forecast_temp</span><span class="s0">\&quot;</span><span class="s2">&gt;&quot;</span><span class="s1">)[</span><span class="s3">1</span><span class="s1">].split(</span><span class="s2">&quot;&lt;&quot;</span><span class="s1">)[</span><span class="s3">0</span><span class="s1">]; 
+                        b = temp; 
+ 
+                    } 
+                } 
+            } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+                e.printStackTrace(); 
+            } 
+            con.disconnect(); 
+            </span><span class="s0">try </span><span class="s1">{ 
+                br.close(); 
+            } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+                e.printStackTrace(); 
+            } 
+ 
+ 
+            </span><span class="s0">return </span><span class="s2">&quot;temp&quot;</span><span class="s1">; 
+        } 
+ 
+        @Override 
+        </span><span class="s0">protected void </span><span class="s1">onPostExecute(String s) { 
+            textview.setText(a); 
+            textview2.setText(b); 
+ 
+        } 
+    } 
+ 
+ 
+} 
+ 
+ 
+ 
+</span></pre>
+</body>
+</html>
